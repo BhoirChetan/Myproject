@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile</title>
+    <link rel="stylesheet" href="profile.css">
+    <style>
+        body {
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.profile-container {
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+    width: 350px;
+    text-align: center;
+}
+
+h2 {
+    color: #2c3e50;
+}
+
+.profile-card {
+    display: flex;
+    flex-direction: column;
+}
+
+label {
+    font-weight: bold;
+    margin: 10px 0 5px;
+}
+
+input, textarea {
+    padding: 8px;
+    width: 100%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+textarea {
+    height: 60px;
+    resize: none;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+button {
+    padding: 8px 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#editBtn {
+    background: #3498db;
+    color: white;
+}
+
+#saveBtn {
+    background: #2ecc71;
+    color: white;
+}
+
+button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+}
+
+    </style>
+</head>
+<body>
+
+    <div class="profile-container">
+        <h2>My Profile</h2>
+        <div class="profile-card">
+            <label for="name">Full Name:</label>
+            <input type="text" id="name" value="John Doe" disabled>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" value="johndoe@gmail.com" disabled>
+
+            <label for="phone">Phone:</label>
+            <input type="text" id="phone" value="9876543210" disabled>
+
+            <label for="address">Address:</label>
+            <textarea id="address" disabled>123 Main Street, City, Country</textarea>
+
+            <div class="buttons">
+                <button id="editBtn">Update</button>
+                <button id="saveBtn" disabled>Save</button>
+            </div>
+        </div>
+    </div>
+
+    <script >
+        document.addEventListener("DOMContentLoaded", () => {
+    const editBtn = document.getElementById("editBtn");
+    const saveBtn = document.getElementById("saveBtn");
+    const inputs = document.querySelectorAll("input, textarea");
+
+    editBtn.addEventListener("click", () => {
+        inputs.forEach(input => input.disabled = false);
+        saveBtn.disabled = false;
+        editBtn.disabled = true;
+    });
+
+    saveBtn.addEventListener("click", () => {
+        const updatedProfile = {
+            name: document.getElementById("name").value,
+            email: document.getElementById("email").value,
+            phone: document.getElementById("phone").value,
+            address: document.getElementById("address").value
+        };
+
+        console.log("Updated Profile:", updatedProfile); // Simulate backend update
+
+        inputs.forEach(input => input.disabled = true);
+        saveBtn.disabled = true;
+        editBtn.disabled = false;
+
+        alert("Profile updated successfully!");
+    });
+});
+
+    </script>
+</body>
+</html>

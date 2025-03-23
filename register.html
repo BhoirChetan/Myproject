@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Registration</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 450px;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+        }
+
+        input,
+        textarea {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 15px;
+        }
+
+        button {
+            flex: 1;
+            padding: 10px;
+            background-color: green;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0 5px;
+        }
+
+        button:hover {
+            background-color: darkgreen;
+        }
+
+        .error {
+            color: red;
+            font-size: 12px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            width: 300px;
+            text-align: center;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .close {
+            color: red;
+            font-size: 20px;
+            float: right;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: darkred;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Customer Registration</h2>
+        <br>
+        <form id="registrationForm">
+            <label>Customer Name:</label>
+            <input type="text" id="customerName" maxlength="50" required>
+            <span class="error" id="nameError"></span>
+            
+            <label>Email:</label>
+            <input type="email" id="email" required>
+            <span class="error" id="emailError"></span>
+            
+            <label>Password:</label>
+            <input type="password" id="password" maxlength="30" required>
+            <span class="error" id="passwordError"></span>
+            
+            <label>Address:</label>
+            <textarea id="address" maxlength="100"></textarea>
+            <span class="error" id="addressError"></span>
+            
+            <label>Contact Number:</label>
+            <input type="text" id="contactNumber" maxlength="10" required>
+            <span class="error" id="contactError"></span>
+
+            <div class="button-container">
+                <button type="submit">Register</button>
+                <button type="button" onclick="location.href='login.html'">Login</button>
+            </div>
+        </form>
+    </div>
+
+    <div id="popupModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3 style="color:green;">Customer Registration Successful</h3>
+            <p><strong>Customer ID:</strong> <span id="modalCustomerId"></span></p>
+            <p><strong>Name:</strong> <span id="modalCustomerName"></span></p>
+            <p><strong>Email:</strong> <span id="modalCustomerEmail"></span></p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("registrationForm").addEventListener("submit", function (event) {
+            event.preventDefault();
+            let isValid = true;
+            document.querySelectorAll(".error").forEach(error => error.textContent = "");
+            
+            let name = document.getElementById("customerName").value.trim();
+            if (!/^[A-Za-z ]+$/.test(name)) {
+                document.getElementById("nameError").textContent = "Customer Name must have alphabets only.";
+                isValid = false;
+            }
+
+            let email = document.getElementById("email").value.trim();
+            if (!email.includes("@")) {
+                document.getElementById("emailError").textContent = "Email ID not valid.";
+                isValid = false;
+            }
+
+            let password = document.getElementById("password").value;
+            let passwordRegex = /^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{5,30}$/;
+            if (!passwordRegex.test(password)) {
+                document.getElementById("passwordError").textContent = "Password must be at least 5 characters long, containing at least 1 uppercase letter, 1 number, and 1 special character.";
+                isValid = false;
+            }
+
+            let address = document.getElementById("address").value.trim();
+            if (address.length < 1) {
+                document.getElementById("addressError").textContent = "Address field cannot be empty.";
+                isValid = false;
+            }
+
+            let contactNumber = document.getElementById("contactNumber").value.trim();
+            if (!/^\d{10}$/.test(contactNumber)) {
+                document.getElementById("contactError").textContent = "Contact number must contain exactly 10 digits.";
+                isValid = false;
+            } else if (/^0{10}$/.test(contactNumber)) {
+                document.getElementById("contactError").textContent = "Contact number cannot be all zeros.";
+                isValid = false;
+            }
+
+            if (isValid) {
+                let customerId = Math.floor(1000 + Math.random() * 9000);
+                document.getElementById("modalCustomerId").textContent = customerId;
+                document.getElementById("modalCustomerName").textContent = name;
+                document.getElementById("modalCustomerEmail").textContent = email;
+                document.getElementById("popupModal").style.display = "flex";
+
+                localStorage.setItem("user", JSON.stringify({ customerId, name, email, password, address, contactNumber }));
+                document.getElementById("registrationForm").reset();
+
+                window.addEventListener("click", function (event) {
+                    let modal = document.getElementById("popupModal");
+                    if (event.target === modal || event.target.className === "close") {
+                        modal.style.display = "none";
+                        window.location.href = "login.html";
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,75 @@
+body {
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+}
+
+h2 {
+    text-align: center;
+}
+
+.form {
+    background: white;
+    padding: 20px;
+    width: 40%;
+    height: auto;
+    border-radius: 10px;
+    text-align: center;
+}
+
+label {
+    font-weight: bold;
+    display: block;
+    margin-top: 10px;
+    text-align: left;
+}
+
+input {
+    width: 97%;
+    padding: 8px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.button-container {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+}
+
+button {
+    width: 48%;
+    padding: 10px;
+    background: #28a745;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+button:hover {
+    background: #218838;
+}
+
+/* Registration Section */
+.register-section {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 14px;
+    color: white;
+}
+
+.register-section a {
+    color: #ffcc00;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.register-section a:hover {
+    text-decoration: underline;
+}
